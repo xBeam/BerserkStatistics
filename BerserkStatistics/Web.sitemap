@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  
+    <siteMapNode url="~/Default.aspx" title="Главная страница"  description="">
+      
+      <siteMapNode url="~/Authentication/Authorization.aspx" title="Авторизация"  description="Страница авторизации">
+        <siteMapNode url="~/Authentication/Registration.aspx" title="Регистрация"  description="Страница регистрации" />
+      </siteMapNode>
+      
+      <siteMapNode url="~/Rating/Default.aspx" title="Рейтинг"  description="Отображение выбранного рейтинга">
+        <siteMapNode url="~/Rating/AddRating.aspx" title="Добавить рейтинг"  description="Добавить новую таблицу рейтинга" />
+      </siteMapNode>
+      
+      <siteMapNode url="~/Tournaments/Default.aspx" title="Турниры"  description="Список всех турниров">
+        <siteMapNode url="~/Tournaments/AddNewTournament.aspx" title="Добавить турнир"  description="Страница для добавления нового турнира" />
+        <siteMapNode url="~/Tournaments/EditTournament.aspx" title="Редактировать турнир"  description="Страница для редактирования данных турнира" />
+      </siteMapNode>
+      
+      <siteMapNode url="~/Cards/Default.aspx" title="Карты"  description="">
+        <siteMapNode url="~/Cards/NeededCards.aspx" title="Нужные карты"  description="Список необходимых карт" />
+        <siteMapNode url="~/Cards/CardsForSale.aspx" title="Карты для продажи"  description="Список карты на обмен/продажу" />
+      </siteMapNode>
+    
+    </siteMapNode>
+</siteMap>
