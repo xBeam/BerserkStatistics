@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web;
 
 namespace BerserkStatistics.Rating
 {
@@ -10,6 +11,13 @@ namespace BerserkStatistics.Rating
         SqlConnection _connection;
         protected void Page_Load(object sender, EventArgs e)
         {
+            HttpCookie userId = Request.Cookies["UserId"];
+
+            if (userId == null)
+            {
+                Response.Redirect("~/Authentication/Authorization.aspx");
+            }
+
             // Чтение значения строки подключения из web.config из секции <connectionStrings>
             string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             // Настройка объекта подключения к базе и открытие подключения.
@@ -37,6 +45,8 @@ namespace BerserkStatistics.Rating
 
         protected void AddButton_Click(object sender, EventArgs e)
         {
+            HttpCookie userId = Request.Cookies["UserId"];
+
             try
             {
                 if (TournamentsNumberTextBox.Text == null || DeckNameTextBox.Text == null || WinNumberTextBox.Text == null)
@@ -51,13 +61,14 @@ namespace BerserkStatistics.Rating
                     ? 0
                     : (decimal.Divide(win, (tourn * 3)) * 100);
 
-                var command = new SqlCommand("INSERT INTO Rating (DeckName, NumberOfTournaments, Win, Loss, PercentPoint)VALUES(@deckName, @tournaments, @win, @loss, @points)", _connection);
+                var command = new SqlCommand("INSERT INTO Rating (DeckName, NumberOfTournaments, Win, Loss, PercentPoint, UserId)VALUES(@deckName, @tournaments, @win, @loss, @points, @userId)", _connection);
                 // Инициализация переменных в запросе.
                 command.Parameters.AddWithValue("@deckName", DeckNameTextBox.Text);
                 command.Parameters.AddWithValue("@tournaments", TournamentsNumberTextBox.Text);
                 command.Parameters.AddWithValue("@win", WinNumberTextBox.Text);
                 command.Parameters.AddWithValue("@loss", loss);
                 command.Parameters.AddWithValue("@points", points);
+                command.Parameters.AddWithValue("@userId", userId.Value);
 
                 // Выполнение запроса.
                 command.ExecuteNonQuery();

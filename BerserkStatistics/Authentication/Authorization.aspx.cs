@@ -15,14 +15,18 @@ namespace BerserkStatistics.Authentication
         SqlConnection _connection;
         protected void Page_Load(object sender, EventArgs e)
         {
-            HttpCookie login = Request.Cookies["Login"];
-            HttpCookie pass = Request.Cookies["Password"];
+            HttpCookie userId = Request.Cookies["UserId"];
 
-            if (login != null && pass != null)
+            if (userId == null)
             {
-                LoginTextBox.Text = login.Value;
-                PasswordTextBox.Text = pass.Value;
-                WelcomeLabel.Text = string.Format("Привет, {0}!", LoginTextBox.Text);
+                WelcomeLabel.Text = "Здравствуйте, гость! <br/> Для продолжения работы вам нужно авторизироваться.";
+            }
+            else
+            {
+                HttpCookie userName = Request.Cookies["UserName"];
+                HttpCookie login = Request.Cookies["Login"];
+
+                WelcomeLabel.Text = string.Format("Привет, {0}!", userName != null ? userName.Value : login.Value);
             }
 
             // Чтение значения строки подключения из web.config из секции <connectionStrings>
@@ -39,13 +43,7 @@ namespace BerserkStatistics.Authentication
                 return;
             }
 
-            var loginCookie = new HttpCookie("Login", LoginTextBox.Text);
-            var passwordCookie = new HttpCookie("Password", PasswordTextBox.Text);
-
-            Response.Cookies.Add(loginCookie);
-            Response.Cookies.Add(passwordCookie);
-
-            var readAllOutput = new Dictionary<string, string>();
+            var outputList = new List<UserId>();
 
             SqlDataReader reader = null;
             string login = null;
@@ -54,24 +52,28 @@ namespace BerserkStatistics.Authentication
             try
             {
                 // Создание объекта запроса.
-                var command = new SqlCommand("SELECT Login, Password FROM Users", _connection);
+                var command = new SqlCommand("SELECT Login, Password, Id, Name FROM Users", _connection);
 
                 // Создание объекта для построчного считывания данных из базы.
                 reader = command.ExecuteReader();
+
                 while (reader.Read())
                 {
                     // Получение данных из колонок.
-                    string resultKey = Convert.ToString(reader["Login"]);
-                    string resultValue = Convert.ToString(reader["Password"]);
-
-                    readAllOutput.Add(resultKey, resultValue);
+                    outputList.Add(new UserId
+                    {
+                        Login = Convert.ToString(reader["Login"]),
+                        Password = Convert.ToString(reader["Password"]),
+                        Name = Convert.ToString(reader["Name"]),
+                        Id = Convert.ToInt32(reader["Id"])
+                    });
                 }
 
-                foreach (var key in readAllOutput.Keys)
+                foreach (var value in outputList)
                 {
-                    if (LoginTextBox.Text == key)
+                    if (LoginTextBox.Text == value.Login)
                     {
-                        login = key;
+                        login = value.Login;
                     }
                 }
 
@@ -82,16 +84,26 @@ namespace BerserkStatistics.Authentication
                 }
                 else
                 {
-                    var pass = readAllOutput.SingleOrDefault(c => c.Key == login).Value;
+                    var user = outputList.SingleOrDefault(c => c.Login == login);
 
-                    if (pass == null)
+                    if (user == null || user.Password == null || user.Password != PasswordTextBox.Text)
                     {
                         WelcomeLabel.Text = "Вы ввели неверные данные!";
                         WelcomeLabel.ForeColor = Color.Red;
                         return;
                     }
 
-                    WelcomeLabel.Text = string.Format("Привет, {0}!", LoginTextBox.Text);
+                    WelcomeLabel.Text = string.Format("Привет, {0}!", user.Name ?? LoginTextBox.Text);
+
+                    var loginCookie = new HttpCookie("Login", LoginTextBox.Text);
+                    var passwordCookie = new HttpCookie("Password", PasswordTextBox.Text);
+                    var userIdCookie = new HttpCookie("UserId", user.Id.ToString());
+                    var userNameCookie = new HttpCookie("UserName", user.Name ?? LoginTextBox.Text);
+
+                    Response.Cookies.Add(loginCookie);
+                    Response.Cookies.Add(passwordCookie);
+                    Response.Cookies.Add(userIdCookie);
+                    Response.Cookies.Add(userNameCookie);
                 }
             }
             catch (Exception ex)
@@ -104,8 +116,17 @@ namespace BerserkStatistics.Authentication
                 if (reader != null)
                 {
                     reader.Close();
+                    _connection.Close();
                 }
             }
         }
+    }
+
+    class UserId
+    {
+        public int Id;
+        public string Login;
+        public string Password;
+        public string Name;
     }
 }

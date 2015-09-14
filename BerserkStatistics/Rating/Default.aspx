@@ -4,7 +4,8 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
      
-         <div style="margin-top: 0px" HorizontalAlign="Center" class="auto-style9">
+         <div style="margin-top: 0px" class="auto-style11">
+                    <div class="auto-style11">
                     <asp:GridView 
                         ID="RatingGridView" 
                         runat="server" 
@@ -25,8 +26,8 @@
                             <asp:BoundField DataField="DeckName" HeaderText="Колода" SortExpression="DeckName" />
                             <asp:BoundField DataField="NumberOfTournaments" HeaderText="Количество турниров" SortExpression="NumberOfTournaments" />
                             <asp:BoundField DataField="Win" HeaderText="Победы" SortExpression="Win" />
-                            <asp:BoundField DataField="Loss" HeaderText="Поражения" SortExpression="Loss" />
-                            <asp:BoundField DataField="PercentPoint" HeaderText="Очки %" SortExpression="PercentPoint" />
+                            <asp:BoundField DataField="Loss" HeaderText="Поражения" ReadOnly="True" SortExpression="Loss" />
+                            <asp:BoundField DataField="PercentPoint" HeaderText="Очки %" ReadOnly="true" SortExpression="PercentPoint" />
                             <asp:CommandField HeaderText="Удалить" ShowDeleteButton="True" Visible="False" />
                         </Columns>
                         <FooterStyle BackColor="#CCCC99" />
@@ -38,7 +39,8 @@
                         <SortedDescendingCellStyle BackColor="#EAEAD3" />
                         <SortedDescendingHeaderStyle BackColor="#575357" />
                     </asp:GridView>
-                    <asp:SqlDataSource ID="RatingSqlDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" DeleteCommand="DELETE FROM [Rating] WHERE [Id] = @Id" InsertCommand="INSERT INTO [Rating] ([DeckName], [NumberOfTournaments], [Win], [Loss], [PercentPoint]) VALUES (@DeckName, @NumberOfTournaments, @Win, @Loss, @PercentPoint)" SelectCommand="SELECT [DeckName], [NumberOfTournaments], [Win], [Loss], [PercentPoint], [Id] FROM [Rating] ORDER BY [PercentPoint] DESC" UpdateCommand="UPDATE [Rating] SET [DeckName] = @DeckName, [NumberOfTournaments] = @NumberOfTournaments, [Win] = @Win, [Loss] = @Loss, [PercentPoint] = @PercentPoint WHERE [Id] = @Id">
+                    </div>
+                    <asp:SqlDataSource ID="RatingSqlDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" DeleteCommand="DELETE FROM [Rating] WHERE [Id] = @Id" InsertCommand="INSERT INTO [Rating] ([DeckName], [NumberOfTournaments], [Win], [Loss], [PercentPoint], [UserId]) VALUES (@DeckName, @NumberOfTournaments, @Win, @Loss, @PercentPoint, @UserId)" SelectCommand="SELECT * FROM [Rating] WHERE ([UserId] = @UserId) ORDER BY [PercentPoint] DESC" UpdateCommand="UPDATE [Rating] SET [DeckName] = @DeckName, [NumberOfTournaments] = @NumberOfTournaments, [Win] = @Win, [Loss] = @Loss, [PercentPoint] = @PercentPoint, [UserId] = @UserId WHERE [Id] = @Id">
                         <DeleteParameters>
                             <asp:Parameter Name="Id" Type="Int32" />
                         </DeleteParameters>
@@ -48,17 +50,25 @@
                             <asp:Parameter Name="Win" Type="Int32" />
                             <asp:Parameter Name="Loss" Type="Int32" />
                             <asp:Parameter Name="PercentPoint" Type="Decimal" />
+                            <asp:Parameter Name="UserId" Type="Int32" />
                         </InsertParameters>
+                        <SelectParameters>
+                            <asp:CookieParameter CookieName="UserId" Name="UserId" Type="Int32" />
+                        </SelectParameters>
                         <UpdateParameters>
                             <asp:Parameter Name="DeckName" Type="String" />
                             <asp:Parameter Name="NumberOfTournaments" Type="Int32" />
                             <asp:Parameter Name="Win" Type="Int32" />
                             <asp:Parameter Name="Loss" Type="Int32" />
                             <asp:Parameter Name="PercentPoint" Type="Decimal" />
+                            <asp:Parameter Name="UserId" Type="Int32" />
                             <asp:Parameter Name="Id" Type="Int32" />
                         </UpdateParameters>
                     </asp:SqlDataSource>
-                    <asp:TextBox ID="DeckNameTextBox" runat="server" ForeColor="Silver" Visible="False">Название колоды</asp:TextBox>
+
+                    <asp:Button ID="EditButton" runat="server" OnClick="EditButton_Click" align="center" Text="Редактировать" Width="130px" />
+
+                    <asp:TextBox ID="DeckNameTextBox" runat="server" ForeColor="Silver" ToolTip="Введите название колоды" Visible="False">Название колоды</asp:TextBox>
                     <script>
                         $(document).ready(function () {
                             $("DeckNameTextBox").focus(function () {
@@ -66,9 +76,8 @@
                             });
                         });
                     </script>
-                    <asp:TextBox ID="TournamentsNumberTextBox" runat="server" ForeColor="Silver" Visible="False">Количество турниров</asp:TextBox>
-                    <asp:TextBox ID="WinNumberTextBox" runat="server" ForeColor="Silver" Visible="False">Количество побед</asp:TextBox>
+                    <asp:TextBox ID="TournamentsNumberTextBox" runat="server" ForeColor="Silver" ToolTip="Введите количество турниров" Visible="False">Количество турниров</asp:TextBox>
+                    <asp:TextBox ID="WinNumberTextBox" runat="server" ForeColor="Silver" ToolTip="Введите количество побед" Visible="False">Количество побед</asp:TextBox>
                     <asp:Button ID="AddButton" runat="server" style="margin-left: 0px" Text="Добавить" Visible="False" Width="130px" OnClick="AddButton_Click" />
-                    <asp:Button  ID="EditButton" runat="server" OnClick="EditButton_Click" Text="Редактировать" Width="130px" />
             </div>
 </asp:Content>

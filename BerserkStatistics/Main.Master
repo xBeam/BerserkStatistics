@@ -22,6 +22,10 @@
     <asp:ContentPlaceHolder ID="head" runat="server"> </asp:ContentPlaceHolder>
 </head>
 <body>
+    <%--<asp:Image runat="server" src="/Images/Колонна Ivory Left.jpg" alt="Deleted" title="Колонна" Height="750" ImageAlign="Left"/>
+    <asp:Image runat="server" src="/Images/Колонна Ivory Right.jpg" alt="Deleted" title="Колонна" Height="750" ImageAlign="Right"/>
+    --%>
+
     <form id="form1" runat="server">
     <div>
         <asp:Menu runat="server"   RenderingMode="List"
@@ -65,8 +69,14 @@
         </asp:ContentPlaceHolder>
         <br />
         <br />
-        <asp:ContentPlaceHolder runat="server" ID="ContentPlaceHolder2"></asp:ContentPlaceHolder>
-        <asp:ContentPlaceHolder runat="server" ID="ContentPlaceHolder3"></asp:ContentPlaceHolder>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <%--<asp:ContentPlaceHolder runat="server" ID="ContentPlaceHolder2"></asp:ContentPlaceHolder>
+        <asp:ContentPlaceHolder runat="server" ID="ContentPlaceHolder3"></asp:ContentPlaceHolder>--%>
         <br />
         <br />
         <div style="margin-top: 20px; padding: 10px; color: Gray; font-style: italic; text-align: center">

@@ -11,7 +11,12 @@ namespace BerserkStatistics.Rating
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            HttpCookie userId = Request.Cookies["UserId"];
 
+            if (userId == null)
+            {
+                Response.Redirect("~/Authentication/Authorization.aspx");
+            }
         }
     }
 }
