@@ -10,3 +10,9 @@ F:\Changes\C#files\BerserkStatistics\BerserkStatistics\bin\BerserkStatistics.pdb
 F:\Changes\C#files\BerserkStatistics\BerserkStatistics\obj\Debug\BerserkStatistics.csprojResolveAssemblyReference.cache
 F:\Changes\C#files\BerserkStatistics\BerserkStatistics\obj\Debug\BerserkStatistics.dll
 F:\Changes\C#files\BerserkStatistics\BerserkStatistics\obj\Debug\BerserkStatistics.pdb
+F:\Changes\C#files\BerserkStatistics Web Forms\BerserkStatistics\bin\BerserkStatistics.dll.config
+F:\Changes\C#files\BerserkStatistics Web Forms\BerserkStatistics\bin\BerserkStatistics.dll
+F:\Changes\C#files\BerserkStatistics Web Forms\BerserkStatistics\bin\BerserkStatistics.pdb
+F:\Changes\C#files\BerserkStatistics Web Forms\BerserkStatistics\obj\Debug\BerserkStatistics.csprojResolveAssemblyReference.cache
+F:\Changes\C#files\BerserkStatistics Web Forms\BerserkStatistics\obj\Debug\BerserkStatistics.dll
+F:\Changes\C#files\BerserkStatistics Web Forms\BerserkStatistics\obj\Debug\BerserkStatistics.pdb
